@@ -8,3 +8,31 @@ $RECYCLE.BIN/
 # Temporary files
 *.tmp
 temp_*
+
+# Documents, Presentations & Rules (non-web)
+.agents/
+*.pptx
+*.docx
+Panduan_Interaktif_Skripsi_Antigravity.html
+Mockup_UI_PowerApps_Peminjaman_Alat.html
+Panduan_Lengkap_Antigravity_Skripsi_PowerPlatform.pdf
+
+# Unused assets
+assets/foto_ucapan_adriana.png
+assets/pdf_cover_preview.png
+assets/step1_download_antigravity.png
+assets/step2_3_install_dan_login.png
+assets/step4_cara_pakai_chat.png
+assets/visual_evolusi_teknologi.png
+
+# Unused photos
+foto/ADEA4857.JPG
+foto/WhatsApp Image 2026-11-10 at 14.35.48.jpeg
+foto/WhatsApp Image 2026-11-10 at 14.35.49.jpeg
+foto/WhatsApp Image 2026-11-10 at 14.35.50 (1).jpeg
+foto/WhatsApp Image 2026-11-10 at 14.35.50.jpeg
+foto/WhatsApp Image 2026-11-10 at 14.35.51 (1).jpeg
+foto/WhatsApp Image 2026-11-10 at 14.35.51.jpeg
+foto/WhatsApp Image 2026-11-10 at 14.35.54 (1).jpeg
+foto/WhatsApp Image 2026-11-10 at 14.35.54 (2).jpeg
+foto/WhatsApp Image 2026-11-10 at 14.35.55.jpeg
