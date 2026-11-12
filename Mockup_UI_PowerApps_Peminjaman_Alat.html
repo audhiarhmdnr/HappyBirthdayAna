@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prototipe UI Power Apps — Sistem Peminjaman Alat Inventaris IT</title>
+<style>
+  :root {
+    --m365-purple: #5c2d91;
+    --m365-blue: #0078d4;
+    --bg: #f3f2f1;
+    --card: #ffffff;
+    --text: #201f1e;
+    --muted: #605e5c;
+    --success: #107c10;
+    --warning: #d83b01;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .topbar {
+    background: linear-gradient(90deg, #5c2d91 0%, #0078d4 100%);
+    color: white;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .topbar h1 { font-size: 1.15rem; font-weight: 600; }
+  .user-pill {
+    background: rgba(255,255,255,0.2);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+  }
+  .layout {
+    max-width: 1180px;
+    margin: 20px auto;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 20px;
+  }
+  .sidebar {
+    background: white;
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    height: fit-content;
+  }
+  .nav-btn {
+    width: 100%;
+    text-align: left;
+    padding: 11px 14px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    margin-bottom: 6px;
+  }
+  .nav-btn.active, .nav-btn:hover {
+    background: #edebe9;
+    color: var(--m365-purple);
+  }
+  .main {
+    background: white;
+    border-radius: 10px;
+    padding: 22px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .toolbar input, .toolbar select {
+    padding: 9px 12px;
+    border: 1px solid #c8c6c4;
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+  .toolbar input { flex: 1; min-width: 200px; }
+  .grid-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .item-card {
+    border: 1px solid #edebe9;
+    border-radius: 10px;
+    padding: 16px;
+    transition: transform 0.15s;
+  }
+  .item-card:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,0.08); }
+  .item-icon { font-size: 2.2rem; margin-bottom: 8px; }
+  .badge-stock {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 6px 0;
+  }
+  .stock-ok { background: #dff6dd; color: var(--success); }
+  .stock-empty { background: #fde7e9; color: #a80000; }
+  .btn-primary {
+    background: var(--m365-purple);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .btn-primary:disabled { background: #c8c6c4; cursor: not-allowed; }
+  .fx-bar {
+    background: #faf9f8;
+    border: 1px solid #e1dfdd;
+    border-left: 4px solid var(--m365-purple);
+    padding: 10px 14px;
+    font-family: Consolas, monospace;
+    font-size: 0.82rem;
+    margin-bottom: 16px;
+    color: #323130;
+  }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.9rem; }
+  th { background: #f3f2f1; padding: 10px; text-align: left; }
+  td { padding: 10px; border-bottom: 1px solid #edebe9; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>⚡ Power Apps Canvas Prototype — Sistem Peminjaman Alat Inventaris IT</h1>
+  <div class="user-pill">👤 Login SSO M365: karyawan@perusahaan.co.id</div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <button class="nav-btn active" onclick="showTab('katalog', this)">💻 Katalog Alat IT</button>
+    <button class="nav-btn" onclick="showTab('form', this)">📝 Form Peminjaman</button>
+    <button class="nav-btn" onclick="showTab('riwayat', this)">📋 Status &amp; Approval</button>
+    <button class="nav-btn" onclick="showTab('admin', this)">🛡️ Panel Admin IT</button>
+    <hr style="margin: 12px 0; border-color: #edebe9;">
+    <p style="font-size: 0.78rem; color: var(--muted);">
+      💡 <b>Tips Skripsi:</b> Kamu bisa melakukan <i>screenshot</i> halaman ini untuk dimasukkan ke <b>Bab 3 (Rancangan Antarmuka / Mockup UI)</b>!
+    </p>
+  </div>
+
+  <div class="main">
+    <div class="fx-bar" id="fxFormula">
+      <b>fx Items =</b> Filter(Master_Alat, (ddKategori.Selected.Value = "Semua" || Kategori.Value = ddKategori.Selected.Value) &amp;&amp; (txtCari.Text in Nama_Alat))
+    </div>
+
+    <!-- TAB 1: KATALOG -->
+    <div id="tab-katalog">
+      <h2 style="margin-bottom: 12px;">Katalog Perangkat Kerja Tersedia</h2>
+      <div class="toolbar">
+        <input type="text" id="searchBox" placeholder="🔍 Cari nama alat atau kode inventaris (misal: Laptop, Headset,INV-01)..." oninput="renderCatalog()">
+        <select id="catFilter" onchange="renderCatalog()">
+          <option value="Semua">Semua Kategori</option>
+          <option value="Laptop">Laptop</option>
+          <option value="Headset">Headset</option>
+          <option value="Aksesoris">Proyektor &amp; Aksesoris</option>
+        </select>
+      </div>
+      <div class="grid-items" id="catalogGrid"></div>
+    </div>
+
+    <!-- TAB 2: FORM PEMINJAMAN -->
+    <div id="tab-form" class="hidden">
+      <h2 style="margin-bottom: 12px;">Form Pengajuan Peminjaman Alat</h2>
+      <div style="max-width: 520px; display: flex; flex-direction: column; gap: 12px;">
+        <label><b>Alat yang Dipilih:</b>
+          <input type="text" id="formAlat" value="INV-LPT-01 — Laptop Lenovo ThinkPad L14 Gen 4" style="width:100%; padding:8px; margin-top:4px;">
+        </label>
+        <label><b>Tanggal Pinjam:</b>
+          <input type="date" id="formTglPinjam" value="2026-11-10" style="width:100%; padding:8px; margin-top:4px;">
+        </label>
+        <label><b>Tanggal Estimasi Kembali:</b>
+          <input type="date" id="formTglKembali" value="2026-11-14" style="width:100%; padding:8px; margin-top:4px;">
+        </label>
+        <label><b>Keperluan Peminjaman:</b>
+          <textarea id="formKeperluan" rows="3" style="width:100%; padding:8px; margin-top:4px;">Kebutuhan rapat klien & WFH proyek divisi operasional</textarea>
+        </label>
+        <button class="btn-primary" onclick="submitLoan()">🚀 Kirim Pengajuan (Trigger Power Automate Approval)</button>
+      </div>
+    </div>
+
+    <!-- TAB 3: RIWAYAT & STATUS APPROVAL -->
+    <div id="tab-riwayat" class="hidden">
+      <h2 style="margin-bottom: 12px;">Riwayat Peminjaman Saya &amp; Status Power Automate</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID Pinjam</th>
+            <th>Nama Alat</th>
+            <th>Tgl Pinjam</th>
+            <th>Wajib Kembali</th>
+            <th>Status Approval (Teams/Outlook)</th>
+          </tr>
+        </thead>
+        <tbody id="loanTableBody">
+          <tr>
+            <td>PNJ-2026-001</td>
+            <td>Laptop Lenovo ThinkPad L14</td>
+            <td>2026-11-05</td>
+            <td>2026-11-12</td>
+            <td><span class="badge-stock stock-ok">✅ Disetujui Atasan (Sedang Dipinjam)</span></td>
+          </tr>
+          <tr>
+            <td>PNJ-2026-002</td>
+            <td>Headset Jabra Evolve2 40 Noise Cancelling</td>
+            <td>2026-11-09</td>
+            <td>2026-11-11</td>
+            <td><span class="badge-stock" style="background:#fff4ce; color:#797673;">⏳ Menunggu Approval IT Support</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TAB 4: ADMIN IT -->
+    <div id="tab-admin" class="hidden">
+      <h2 style="margin-bottom: 12px;">Panel Verifikasi Pengembalian &amp; Audit Fisik (Admin IT)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID Pinjam</th>
+            <th>Peminjam</th>
+            <th>Alat</th>
+            <th>Kondisi Kembali</th>
+            <th>Aksi Admin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PNJ-2026-001</td>
+            <td>Budi Santoso (Divisi IT)</td>
+            <td>INV-LPT-01 — ThinkPad L14</td>
+            <td>Baik / Lengkap Charger</td>
+            <td><button class="btn-primary" style="margin:0; padding:6px 10px;" onclick="alert('Power Automate dijalankan: Status diubah menjadi Dikembalikan & Stok Master_Alat otomatis bertambah +1!')">✔️ Konfirmasi Kembali (+1 Stok)</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const items = [
+  { code: "INV-LPT-01", name: "Laptop Lenovo ThinkPad L14 Gen 4", cat: "Laptop", stock: 4, icon: "💻" },
+  { code: "INV-LPT-02", name: "Laptop Dell Latitude 5440 i7", cat: "Laptop", stock: 2, icon: "💻" },
+  { code: "INV-HDS-01", name: "Headset Jabra Evolve2 40 USB-C", cat: "Headset", stock: 7, icon: "🎧" },
+  { code: "INV-HDS-02", name: "Headset Logitech Zone Vibe 125", cat: "Headset", stock: 0, icon: "🎧" },
+  { code: "INV-PRJ-01", name: "Proyektor Epson EB-E500 Portable", cat: "Aksesoris", stock: 3, icon: "📽️" },
+  { code: "INV-ADP-01", name: "USB-C Multiport Hub HDMI + LAN", cat: "Aksesoris", stock: 9, icon: "🔌" }
+];
+
+function renderCatalog() {
+  const q = document.getElementById('searchBox').value.toLowerCase();
+  const c = document.getElementById('catFilter').value;
+  const grid = document.getElementById('catalogGrid');
+  grid.innerHTML = '';
+  items.filter(it => (c === 'Semua' || it.cat === c) && (it.name.toLowerCase().includes(q) || it.code.toLowerCase().includes(q)))
+       .forEach(it => {
+         const ok = it.stock > 0;
+         grid.innerHTML += `
+           <div class="item-card">
+             <div class="item-icon">${it.icon}</div>
+             <div style="font-size:0.78rem; color:#605e5c; font-weight:600;">${it.code} • ${it.cat}</div>
+             <h3 style="font-size:0.98rem; margin:4px 0;">${it.name}</h3>
+             <span class="badge-stock ${ok ? 'stock-ok' : 'stock-empty'}">
+               ${ok ? 'Tersedia: ' + it.stock + ' Unit' : 'Stok Habis Dipinjam'}
+             </span>
+             <button class="btn-primary" ${ok ? '' : 'disabled'} onclick="selectItem('${it.code} — ${it.name}')">
+               ${ok ? 'Pinjam Alat Ini' : 'Tidak Tersedia'}
+             </button>
+           </div>
+         `;
+       });
+}
+
+function selectItem(label) {
+  document.getElementById('formAlat').value = label;
+  showTab('form', document.querySelectorAll('.nav-btn')[1]);
+}
+
+function submitLoan() {
+  const alat = document.getElementById('formAlat').value;
+  const t1 = document.getElementById('formTglPinjam').value;
+  const t2 = document.getElementById('formTglKembali').value;
+  const tbody = document.getElementById('loanTableBody');
+  tbody.innerHTML = `
+    <tr>
+      <td>PNJ-2026-003</td>
+      <td>${alat}</td>
+      <td>${t1}</td>
+      <td>${t2}</td>
+      <td><span class="badge-stock" style="background:#fff4ce; color:#797673;">⏳ Menunggu Approval (Notifikasi Teams Terkirim)</span></td>
+    </tr>
+  ` + tbody.innerHTML;
+  alert("Pengajuan berhasil disimpan ke SharePoint List! Power Automate sedang mengirim kartu Approval ke Microsoft Teams Atasan/IT.");
+  showTab('riwayat', document.querySelectorAll('.nav-btn')[2]);
+}
+
+function showTab(tabName, btn) {
+  ['katalog', 'form', 'riwayat', 'admin'].forEach(t => {
+    document.getElementById('tab-' + t).classList.add('hidden');
+  });
+  document.getElementById('tab-' + tabName).classList.remove('hidden');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const formulas = {
+    katalog: '<b>fx Items =</b> Filter(Master_Alat, (ddKategori.Selected.Value = "Semua" || Kategori.Value = ddKategori.Selected.Value) && (txtCari.Text in Nama_Alat))',
+    form: '<b>fx OnSelect =</b> Patch(Transaksi_Peminjaman, Defaults(Transaksi_Peminjaman), {Kode_Alat: txtAlat.Text, Status_Pinjam: {Value: "Menunggu Approval"}})',
+    riwayat: '<b>fx Items =</b> Filter(Transaksi_Peminjaman, Email_Peminjam = User().Email)',
+    admin: '<b>fx OnSelect =</b> Patch(Master_Alat, LookUp(Master_Alat, Kode_Alat = ThisItem.Kode_Alat), {Stok_Tersedia: Stok_Tersedia + 1})'
+  };
+  document.getElementById('fxFormula').innerHTML = formulas[tabName];
+}
+
+renderCatalog();
+</script>
+</body>
+</html>
+
